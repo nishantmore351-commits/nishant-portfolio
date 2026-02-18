@@ -65,6 +65,7 @@ const PLAN_CONFIG = {
 
 export default function OnboardingPage() {
   const navigate = useNavigate();
+  
   const { width, height } = useWindowSize();
 
   const params = new URLSearchParams(window.location.search);
@@ -77,6 +78,7 @@ export default function OnboardingPage() {
   const isCustom = selectedPlan === "PREMIUM";
 
   const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -313,11 +315,18 @@ const generatePDF = async () => {
 
   setSubmitted(true);
 
+if (loading) return; // prevent double trigger
+
+  setLoading(true);
+
+  try {
     const response = await fetch(
       "https://formspree.io/f/mojnlwpb",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           plan: selectedPlan,
           ...form,
@@ -326,11 +335,16 @@ const generatePDF = async () => {
     );
 
     if (response.ok) {
-      generatePDF();
       setSubmitted(true);
     } else {
       alert("Something went wrong.");
     }
+  } catch (error) {
+    console.error(error);
+    alert("Error submitting form.");
+  } finally {
+    setLoading(false);
+  }
   };
 
   // 🎉 SUCCESS SCREEN
@@ -461,15 +475,17 @@ const generatePDF = async () => {
             )}
 
             <button
-              type="submit"
-              className="w-full py-4 rounded-xl font-bold uppercase text-sm"
-              style={{
-                backgroundColor: "#D0FF71",
-                color: "#0f0f0f",
-              }}
-            >
-              Submit Request →
-            </button>
+  type="submit"
+  disabled={loading}
+  className="w-full py-4 rounded-xl font-bold uppercase text-sm transition-all"
+  style={{
+    backgroundColor: loading ? "#888" : "#D0FF71",
+    color: "#0f0f0f",
+  }}
+>
+  {loading ? "Submitting..." : "Submit Request →"}
+</button>
+
           </form>
         </div>
 
