@@ -11,8 +11,9 @@ import ContactSection from "@/components/portfolio/ContactSection";
 import Footer from "@/components/portfolio/Footer";
 import FloatingCVCard from "@/components/portfolio/FloatingCVCard";
 import PricingSection from "@/components/portfolio/PricingSection"; 
-
-
+import TechStackSection from "@/components/portfolio/TechStackSection";
+import ThreeDSection from "@/components/portfolio/ThreeDSection";
+import WorkflowSection from "@/components/portfolio/WorkflowSection";
 const Index = () => {
   return (
     <>
@@ -26,6 +27,12 @@ const Index = () => {
         <AboutSection />
         <div className="section-divider" />
         <ProjectsSection />
+        <div className="section-divider" />
+        <TechStackSection />
+        <div className="section-divider" />
+        <ThreeDSection />
+        <div className="section-divider" />
+        <WorkflowSection />
         <div className="section-divider" />
         <PricingSection />
         <div className="section-divider" />

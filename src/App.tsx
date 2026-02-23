@@ -11,6 +11,7 @@ import CheckoutPage from "@/pages/Checkoutpage";
 import PaymentSuccess from "@/pages/PaymentSuccess";
 import PaymentCancel from "@/pages/PaymentCancel";
 
+
 const queryClient = new QueryClient();
 
 const App = () => (

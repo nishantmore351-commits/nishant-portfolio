@@ -276,45 +276,32 @@ const generatePDF = async () => {
     e.preventDefault();
 
 
-  // 1️⃣ Send to YOU (admin)
-  await emailjs.send(
-    "service_vz804gd",
-    "template_u29njkn",
-
-    {
-         name: form.name,
-    email: form.email,
-    projectName: form.projectName,
+  const templateParams = {
+    client_name:form.name,
+    client_email: form.email,
+    project_name: form.projectName,
     industry: form.industry,
     topic: form.topic,
     description: form.description,
     plan: selectedPlan,
-    timeline: form.timeline,
-    budget: form.budget,
-    },
-    "WytLE-kBdsa_C9i6B"
-  );
+  };
 
-  // 2️⃣ Send Auto Reply to CLIENT
-  await emailjs.send(
-    "service_vz804gd",
-    "template_u29njkn",
-    {
-          name: form.name,
-    email: form.email,
-    projectName: form.projectName,
-    industry: form.industry,
-    topic: form.topic,
-    description: form.description,
-    plan: selectedPlan,
-    timeline: form.timeline,
-    budget: form.budget,
-    },
-    "WytLE-kBdsa_C9i6B"
-  );
+  try {
+    // 1️⃣ Send Admin Email
+    await emailjs.send(
+      "service_vz804gd",
+      "template_mv86gik",
+      templateParams,
+      "WytLE-kBdsa_C9i6B"
+    );
 
-  setSubmitted(true);
-
+    // 2️⃣ Send Client Confirmation Email
+    await emailjs.send(
+      "service_vz804gd",
+      "template_0xsllbc",
+      templateParams,
+      "WytLE-kBdsa_C9i6B"
+    );
 if (loading) return; // prevent double trigger
 
   setLoading(true);
@@ -345,7 +332,12 @@ if (loading) return; // prevent double trigger
   } finally {
     setLoading(false);
   }
-  };
+  } catch (error) {
+    console.error("EmailJS Error:", error);
+    alert("Failed to send email notifications.");
+  }
+};
+
 
   // 🎉 SUCCESS SCREEN
   if (submitted) {
